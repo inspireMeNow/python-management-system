@@ -7,8 +7,8 @@ if __name__ == "__main__":
         
         user=User()
 
-        print("用户注册：")
-        user.register()
+        # print("用户注册：")
+        # user.register()
 
         print("登录系统：")
         user=user.login()

@@ -3,20 +3,22 @@ from PyQt6 import QtGui
 from pojo.user import User
 
 
-class LoginWindow(QWidget):
+class RegisterWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('系统登录')
+        self.setWindowTitle('用户注册')
         self.resize(300, 150)
         self.center()
 
         # 创建窗口控件
         username_label = QLabel('用户名: ')
+        email_label = QLabel('邮箱：')
         password_label = QLabel('密码: ')
         self.username_edit = QLineEdit()
         self.password_edit = QLineEdit()
         self.password_edit.setEchoMode(QLineEdit.EchoMode.Password)  # 设置密码框
+        self.email_edit = QLineEdit()
         login_button = QPushButton('登录')
 
         # 绑定登录事件
@@ -28,6 +30,8 @@ class LoginWindow(QWidget):
         layout.addWidget(self.username_edit)
         layout.addWidget(password_label)
         layout.addWidget(self.password_edit)
+        layout.addWidget(email_label)
+        layout.addWidget(self.email_edit)
         layout.addWidget(login_button)
 
         self.setLayout(layout)
@@ -41,17 +45,18 @@ class LoginWindow(QWidget):
     def handle_login(self):
         username = self.username_edit.text()
         password = self.password_edit.text()
+        email = self.email_edit.text()
         user = User()
-        user.setArg(username, password, '', 1)
+        user.setArg(username, password, email, 1)
 
         # user.register()
 
-        isSuccess = user.login()
+        isSuccess = user.register()
 
         if isSuccess == 0:
             msg_box = QMessageBox()
             msg_box.setWindowTitle("提示")
-            msg_box.setText("登录成功！")
+            msg_box.setText("注册成功！")
             msg_box.setIcon(QMessageBox.Icon.Information)
             msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
             msg_box.exec()
@@ -59,7 +64,7 @@ class LoginWindow(QWidget):
         elif isSuccess == -1:
             msg_box = QMessageBox()
             msg_box.setWindowTitle("提示")
-            msg_box.setText("用户名或密码错误！")
+            msg_box.setText("用户名已存在！")
             msg_box.setIcon(QMessageBox.Icon.Information)
             msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
             msg_box.exec()
@@ -67,7 +72,7 @@ class LoginWindow(QWidget):
         else:
             msg_box = QMessageBox()
             msg_box.setWindowTitle("提示")
-            msg_box.setText("用户名不存在!")
+            msg_box.setText("密码强度过低！")
             msg_box.setIcon(QMessageBox.Icon.Information)
             msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
             msg_box.exec()
