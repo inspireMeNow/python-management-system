@@ -43,6 +43,14 @@
             "program": "${workspaceFolder}/test_register.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "库存信息测试",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_find_part.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
