@@ -1,7 +1,3 @@
-from utils.encrypt import Encrypt
-from utils.dbutils import dbutils
-
-
 class User:
     __id = ''
     __password = ''
@@ -11,78 +7,24 @@ class User:
     def __init__(self):
         pass
 
-    def setArg(self, id, password, email, idtype):
-        self.__id = id
+    def setArg(self, username, password, email, idtype):
+        self.__id = username
         self.__password = password
         self.__email = email
         self.__idtype = idtype
 
-    def findUser(self, id):
-        try:
-            connection_poll = dbutils.create_pool()
-            conn = connection_poll.connection()
-            cursor = conn.cursor()
-            cursor.execute(
-                "SELECT id,email,idtype FROM id_table WHERE id=%s", (id,))
-            row = cursor.fetchone()
-            if row:
-                user = User()
-                user.setArg(row[0], '', row[1], row[2])
-                conn.close()
-                return user
-            else:
-                conn.close()
-                return
-        except Exception as e:
-            print(str(e))
+    def get_id(self):
+        return self.__id
 
-    def Print(self):
-        print(self.__id+"\n"+self.__password+"\n" +
-              self.__email+"\n"+f'{self.__idtype}')
+    def get_password(self):
+        return self.__password
 
-    def setPassword(self, password):
-        try:
-            connection_poll = dbutils.create_pool()
-            conn = connection_poll.connection()
-            cursor = conn.cursor()
-            cursor.execute("UPDATE id_table SET passwd=%s WHERE id=%s",
-                           (Encrypt.md5(password)[0:19], self.__id))
-            conn.commit()
-            print("密码修改成功!")
-            conn.close()
-        except Exception as e:
-            print(e)
+    def get_email(self):
+        return self.__email
 
-    def login(self):
-        connection_poll = dbutils.create_pool()
-        conn = connection_poll.connection()
-        user = User()
-        user = user.findUser(self.__id)
-        if (user == None):
-            return -2
-        else:
-            cursor = conn.cursor()
-            cursor.execute(
-                "SELECT passwd FROM id_table WHERE id=%s", (user.__id,))
-            row = cursor.fetchone()
-            if row[0] == Encrypt.md5(self.__password)[0:19]:
-                return 0
-            else:
-                return -1
-        conn.close()
+    def get_idtype(self):
+        return self.__idtype
 
-    def register(self):
-        connection_poll = dbutils.create_pool()
-        conn = connection_poll.connection()
-        user = User()
-        user = user.findUser(self.__id)
-        if (user == None):
-            cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO id_table(id,passwd,email,idtype) VALUES(%s,%s,%s,%s)", (self.__id, Encrypt.md5(self.__password)[0:19], self.__email, int("1")))
-            conn.commit()
-            conn.close()
-            return 0
-        else:
-            conn.close()
-            return -1
+    def print(self):
+        print(self.__id + "\n" + self.__password + "\n" +
+              self.__email + "\n" + f'{self.__idtype}')

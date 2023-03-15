@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QApplication, QTableView, QWidget, QVBoxLayout
-from PyQt5.QtCore import QAbstractTableModel, Qt
+from PyQt6.QtWidgets import QApplication, QTableView, QWidget, QVBoxLayout
+from PyQt6.QtCore import QAbstractTableModel, Qt
 
 
 class MyModel(QAbstractTableModel):
@@ -8,7 +8,7 @@ class MyModel(QAbstractTableModel):
         self._data = data
 
     def data(self, index, role):
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole:
             row = index.row()
             col = index.column()
             return self._data[row][col]

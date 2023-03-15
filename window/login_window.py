@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 from PyQt6 import QtGui
 from pojo.user import User
+from service import login_service
 
 
 class LoginWindow(QWidget):
@@ -46,9 +47,9 @@ class LoginWindow(QWidget):
 
         # user.register()
 
-        isSuccess = user.login()
+        is_success = login_service.login(user)
 
-        if isSuccess == 0:
+        if is_success == 0:
             msg_box = QMessageBox()
             msg_box.setWindowTitle("提示")
             msg_box.setText("登录成功！")
@@ -56,7 +57,7 @@ class LoginWindow(QWidget):
             msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
             msg_box.exec()
 
-        elif isSuccess == -1:
+        elif is_success == -1:
             msg_box = QMessageBox()
             msg_box.setWindowTitle("提示")
             msg_box.setText("用户名或密码错误！")
