@@ -51,6 +51,14 @@
             "program": "${workspaceFolder}/test_find_part.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "网络服务器测试",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/server.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
