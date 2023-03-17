@@ -1,7 +1,9 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 from PyQt6 import QtGui
 from pojo.user import User
-from service import login_service
+from service import user_service
+import requests
+import json
 
 
 class LoginWindow(QWidget):
@@ -43,11 +45,16 @@ class LoginWindow(QWidget):
         username = self.username_edit.text()
         password = self.password_edit.text()
         user = User()
-        user.setArg(username, password, '', 1)
+        user.set_args(username, password, '', 1)
 
         # user.register()
 
-        is_success = login_service.login(user)
+        # test login
+        data = {'id': 'dky', 'password': 'DKY357896'}
+        response = requests.get('http://localhost:8088/is_login', params=data)
+        response.encoding = 'utf-8'
+        new_data = json.dumps(response.text)
+        is_success = int(new_data.replace('"', ''))
 
         if is_success == 0:
             msg_box = QMessageBox()

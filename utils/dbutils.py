@@ -1,11 +1,11 @@
 import pymysql
 # import dbutils
-from .encrypt import Encrypt
+from . import encrypt
 
 
 def create_pool():
     from DBUtils.PooledDB import PooledDB
-    passwd = Encrypt.md5("dkyDKY159357")
+    passwd = encrypt.md5("dkyDKY159357")
     poll = PooledDB(
         creator=pymysql,
         maxconnections=5,

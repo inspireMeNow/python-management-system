@@ -1,4 +1,3 @@
-from utils.encrypt import Encrypt
 from utils import dbutils
 from pojo.part import Part
 
@@ -29,7 +28,7 @@ def delete_by_code(p_code):
     try:
         if find_by_code(p_code) is None:
             print("该配件不存在!")
-            return
+            return -1
         else:
             connection_poll = dbutils.create_pool()
             conn = connection_poll.connection()
@@ -38,7 +37,7 @@ def delete_by_code(p_code):
                            (p_code,))
             conn.commit()
             conn.close()
-            print("删除成功!")
+            return 0
     except Exception as e:
         print(e)
 
@@ -46,10 +45,10 @@ def delete_by_code(p_code):
 def update_by_code(part):
     try:
         if part == None:
-            return
+            return -2
         if find_by_code(part.get_p_code()) is None:
             print("该配件不存在!")
-            return
+            return -1
         else:
             connection_poll = dbutils.create_pool()
             conn = connection_poll.connection()
@@ -65,7 +64,7 @@ def update_by_code(part):
                            "WHERE pcode = %s", (part.get_p_name(), part.get_p_type(), part.get_manufacture(), part.get_protime(), part.get_warranty_time(), part.get_info(), part.get_size(), part.get_p_code()))
             conn.commit()
             conn.close()
-            print("修改成功!")
+            return 0
     except Exception as e:
         print(e)
 
@@ -87,3 +86,21 @@ def find_all():
         return parts
     except Exception as e:
         print(str(e))
+
+def insert(part):
+    try:
+        if part == None:
+            return -2
+        if find_by_code(part.get_p_code()) is None:
+            connection_poll = dbutils.create_pool()
+            conn = connection_poll.connection()
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO part_table VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (part.get_p_code(), part.get_p_name(), part.get_p_type(), part.get_manufacture(), part.get_protime(), part.get_warranty_time(), part.get_info(), part.get_size()))
+            conn.commit()
+            conn.close()
+            return 0
+        else:
+            print("该配件已存在!")
+            return -1
+    except Exception as e:
+        print(e)

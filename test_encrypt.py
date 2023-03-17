@@ -1,11 +1,13 @@
 import sys
-from utils.encrypt import Encrypt
+from utils import encrypt
+from utils import check
 
 
 if __name__ == "__main__":
     try:
         
-        print(Encrypt.md5(""))
+        # print(encrypt.md5("dkyDKY159357"))
+        print(encrypt.md5("DKY357896")[0:19])
 
     except Exception as e:
         print(str(e))

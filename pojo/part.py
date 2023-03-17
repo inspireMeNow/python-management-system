@@ -19,7 +19,7 @@ class Part:
         self.__warranty_time = warranty_time
         self.__info = info
         self.__size = size
-    
+
     def __init__(self):
         pass
 
@@ -46,7 +46,7 @@ class Part:
 
     def get_size(self):
         return self.__size
-    
+
     def to_json(self):
         return {
             "p_code": self.__p_code,

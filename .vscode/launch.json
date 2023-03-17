@@ -8,7 +8,7 @@
             "name": "主程序",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/main.py",
+            "program": "${workspaceFolder}/client.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -40,7 +40,7 @@
             "name": "注册界面测试",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/test_register.py",
+            "program": "${workspaceFolder}/test_register_window.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
