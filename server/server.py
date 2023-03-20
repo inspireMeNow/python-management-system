@@ -37,7 +37,6 @@ class CustomHandler(BaseHTTPRequestHandler):
 
         elif path.startswith('/find_all_part'):
             part = part_service.find_all()
-            print(part)
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
@@ -88,7 +87,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             self.wfile.write(str(is_success).encode())
 
         elif path.startswith('/set_email'):
-            is_success = user_service.set_password(
+            is_success = user_service.set_email(
                 params['id'][0], params['email'][0])
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')

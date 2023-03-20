@@ -8,7 +8,7 @@
             "name": "主程序",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/client.py",
+            "program": "${workspaceFolder}/main_window.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },

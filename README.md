@@ -14,4 +14,15 @@
 - 实现tcp连接的加密保护数据传输
 ## 即将实现的功能
 - 实现入库出库功能
+## 鸣谢
+- 编写人员：
+    - @duan-dky
+- 使用的开源库：
+    - hashlib
+    - PyQT6
+    - socket
+    - http
+    - json
+    - request
+
 

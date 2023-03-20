@@ -53,7 +53,7 @@ def login(u):
         cursor.execute(
             "SELECT passwd FROM id_table WHERE id=%s", (u.get_id(),))
         row = cursor.fetchone()
-        if row[0] == encrypt.md5(u.get_password())[0:19]:
+        if row[0] == u.get_password():
             conn.close()
             return 0
         else:
@@ -67,7 +67,7 @@ def register(u):
     user = User()
     user = find_user(u.get_id())
     if user is None:
-        if len(u.get_password()) >= 20 or len(u.get_id()) > 8 or len(u.get_id()) < 2 or len(u.get_email()) > 20 or len(u.get_email()) < 2 or u.get_id() == '' or u.get_password() == '' or u.get_idtype() == 0 or check.check_password_strength(u.get_password()) < 2:
+        if len(u.get_password()) > 20 or len(u.get_id()) > 8 or len(u.get_id()) < 2 or len(u.get_email()) > 20 or len(u.get_email()) < 2 or u.get_id() == '' or u.get_password() == '' or u.get_idtype() == 0 or check.check_password_strength(u.get_password()) < 2:
             return -2
         else:
             cursor = conn.cursor()
@@ -97,3 +97,38 @@ def set_email(username, email):
         conn.commit()
         conn.close()
         return 0
+
+
+def delete_user(username):
+    if find_user(username) is None:
+        return -1
+    else:
+        connection_poll = dbutils.create_pool()
+        conn = connection_poll.connection()
+        cursor = conn.cursor()
+        cursor.execute("delete from id_table WHERE id=%s",
+                       (username,))
+        conn.commit()
+        conn.close()
+        return 0
+
+def admin_login(u):
+    connection_poll = dbutils.create_pool()
+    conn = connection_poll.connection()
+    user = User()
+    user = find_user(u.get_id())
+    if user is None:
+        return -2
+    elif u.get_idtype() != 0:
+        return -1
+    else:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT passwd FROM id_table WHERE id=%s", (u.get_id(),))
+        row = cursor.fetchone()
+        if row[0] == u.get_password():
+            conn.close()
+            return 0
+        else:
+            conn.close()
+            return -1

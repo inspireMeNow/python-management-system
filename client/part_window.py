@@ -38,7 +38,7 @@ def main():
     # add the table view to the layout
     layout.addWidget(table_view)
 
-    # set the layout on the window and show
+    # set the layout on the client and show
     window.setLayout(layout)
     window.show()
     app.exec()
