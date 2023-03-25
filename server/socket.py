@@ -2,8 +2,11 @@ import socket
 import ssl
 from service import part_service
 from service import user_service
+from service import in_out_service
 from pojo.part import Part
 from pojo.user import User
+from pojo.in_order import In_Order
+from pojo.out_order import Out_Order
 import json
 
 
@@ -81,7 +84,7 @@ def run_server():
                 user.set_args(json.loads(data.decode())['value']['id'],
                               json.loads(data.decode())['value']['password'],
                               json.loads(data.decode())['value']['email'], 1)
-                is_success = user_service.login(user)
+                is_success = user_service.register(user)
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'set_email'):
@@ -99,7 +102,23 @@ def run_server():
                 user.set_args(json.loads(data.decode())['value']['id'],
                               json.loads(data.decode())['value']['password'],
                               '', 0)
-                is_success = user_service.login(user)
+                is_success = user_service.admin_login(user)
+                ssl_client_socket.send(str(is_success).encode())
+
+            elif (json.loads(data.decode())['key'] == 'find_all_user'):
+                user = user_service.find_all()
+                ssl_client_socket.send(json.dumps(user).encode())
+
+            elif (json.loads(data.decode())['key'] == 'find_all_in_order'):
+                order = in_out_service.find_all_in_order()
+                ssl_client_socket.send(json.dumps(order,ensure_ascii=False).encode())
+            
+            elif (json.loads(data.decode())['key'] == 'find_all_out_order'):
+                order = in_out_service.find_all_out_order()
+                ssl_client_socket.send(json.dumps(order).encode())
+
+            elif (json.loads(data.decode())['key'] == 'delete_user_by_id'):
+                is_success = user_service.delete_user(json.loads(data.decode())['value'])
                 ssl_client_socket.send(str(is_success).encode())
 
             else:
