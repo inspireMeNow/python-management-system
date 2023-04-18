@@ -1,4 +1,4 @@
-from utils import server_encrypt, client_encrypt
+from utils import server_encrypt
 from utils import dbutils
 from pojo.user import User
 from utils import check
@@ -31,7 +31,7 @@ def set_password(username, password):
 
     if find_user(username) is None:
         return -1
-    elif len(password) >= 20 or (check.check_password_strength(password) < 2) or password == '':
+    elif check.check_password_strength(password) < 2 or password == '':
         return -2
     else:
         input_password = password.encode()
@@ -78,7 +78,7 @@ def register(u):
     user = User()
     user = find_user(u.get_id())
     if user is None:
-        if len(u.get_id()) > 8 or len(u.get_id()) < 2 or len(u.get_email()) > 20 or len(u.get_email()) < 2 or u.get_id() == '' or u.get_password() == '' or u.get_idtype() == 0 or check.check_password_strength(u.get_password()) < 2 :
+        if len(u.get_id()) > 8 or len(u.get_id()) < 2 or len(u.get_email()) > 20 or len(u.get_email()) < 2 or u.get_id() == '' or u.get_password() == '' or u.get_idtype() == 0 or check.check_password_strength(u.get_password()) < 2:
             return -2
         else:
             input_password = u.get_password().encode()
@@ -127,6 +127,7 @@ def delete_user(username):
         conn.close()
         return 0
 
+
 def admin_login(u):
     connection_poll = dbutils.create_pool()
     conn = connection_poll.connection()
@@ -150,6 +151,7 @@ def admin_login(u):
     else:
         return -3
 
+
 def find_all():
     try:
         connection_poll = dbutils.create_pool()
@@ -158,12 +160,12 @@ def find_all():
         cursor.execute("SELECT id,email,idtype FROM id_table")
         rows = cursor.fetchall()
         users = {}
-        i=0
+        i = 0
         for row in rows:
             user = User()
-            user.set_args(row[0],'',row[1], row[2])
-            users[str(i)]= user.to_json()
-            i+=1
+            user.set_args(row[0], '', row[1], row[2])
+            users[str(i)] = user.to_json()
+            i += 1
         conn.close()
         return users
     except Exception as e:

@@ -5,50 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "主程序",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/main_window.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "测试登录",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/test_login.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
             "name": "测试加密",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/test_encrypt.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "表格界面测试",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/window/part_window.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "注册界面测试",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/test_register_window.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "库存信息测试",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/test_find_part.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },

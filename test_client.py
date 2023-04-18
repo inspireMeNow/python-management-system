@@ -21,7 +21,7 @@ import socket
 import ssl
 import json
 import sys
-from utils import encrypt
+
 
 try:
     host = 'localhost'
@@ -33,8 +33,8 @@ try:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         with context.wrap_socket(sock, server_hostname=host) as s:
             s.connect((host, port))
-            send_data = {"key": "is_register", "value": {
-                "id": "ssss", "password": "DKY123456", "email": "asa@def.com", "idtype": 1}}
+            send_data = {"key": "set_password", "value": {
+                "id": "admin", "password": "a66abb5684c45962d887564f08346e8d"}}
             s.send(json.dumps(send_data).encode())
             # receive data from the server
             data = s.recv(1024)
