@@ -1,6 +1,6 @@
 import sys
-from pojo.user import User
-from service import user_service
+from pojo.login import Login
+from service import login_service
 import json
 import requests
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         # new_data = json.dumps(response.text)
         # print(new_data)
 
-        # user = User()
+        # user = Login()
 
         # # print("用户注册：")
         # # user.register()
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         # password = input("请输入你的密码：")
         # user.set_args(username, password, "", 1)
 
-        # if user_service.login(user) == 0:
+        # if login_service.login(user) == 0:
         #     print("登录成功\n")
         #     print("修改用户密码：")
         #     password = input("请输入你的新密码：")
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         #         print("请核对您输入的密码并重新输入！")
         #         password = input("请输入你的新密码：")
         #         r_password = input("请再次输入您的密码：")
-        #     user_service.set_password(user, password)
+        #     login_service.set_password(user, password)
 
 
     except Exception as e:

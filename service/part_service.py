@@ -68,6 +68,7 @@ def update_by_code(part):
     except Exception as e:
         print(e)
 
+
 def find_all():
     try:
         connection_poll = dbutils.create_pool()
@@ -75,17 +76,20 @@ def find_all():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM part_table")
         rows = cursor.fetchall()
-        parts = []
+        parts = {}
+        i = 0
         for row in rows:
             part = Part()
             part.set_p_code(row[0])
             part.set_args(row[1], row[2], row[3],
                           row[4].strftime("%Y-%m-%d %H:%M:%S"), row[5], row[6], row[7])
-            parts.append(part.to_json())
+            parts[str(i)] = part.to_json()
+            i += 1
         conn.close()
         return parts
     except Exception as e:
         print(str(e))
+
 
 def insert(part):
     try:
@@ -95,7 +99,8 @@ def insert(part):
             connection_poll = dbutils.create_pool()
             conn = connection_poll.connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO part_table VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (part.get_p_code(), part.get_p_name(), part.get_p_type(), part.get_manufacture(), part.get_protime(), part.get_warranty_time(), part.get_info(), part.get_size()))
+            cursor.execute("INSERT INTO part_table VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (part.get_p_code(), part.get_p_name(
+            ), part.get_p_type(), part.get_manufacture(), part.get_protime(), part.get_warranty_time(), part.get_info(), part.get_size()))
             conn.commit()
             conn.close()
             return 0

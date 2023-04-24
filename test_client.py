@@ -33,8 +33,9 @@ try:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         with context.wrap_socket(sock, server_hostname=host) as s:
             s.connect((host, port))
-            send_data = {"key": "set_password", "value": {
-                "id": "admin", "password": "a66abb5684c45962d887564f08346e8d"}}
+            # send_data = {"key": "set_password", "value": {
+            #     "id": "admin", "password": "a66abb5684c45962d887564f08346e8d"}}
+            send_data = {"key": "find_all_user_info", "value": ""}
             s.send(json.dumps(send_data).encode())
             # receive data from the server
             data = s.recv(1024)

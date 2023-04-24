@@ -5,8 +5,9 @@ import socketserver
 import urllib.parse
 from pojo.part import Part
 from service import part_service
-from service import user_service
-from pojo.user import User
+from service import login_service
+from pojo.login import Login
+
 
 # 自定义子类，用于处理 HTTP 请求
 
@@ -72,14 +73,14 @@ class CustomHandler(BaseHTTPRequestHandler):
             self.wfile.write(str(is_success).encode())
 
         elif path.startswith('/search_user'):
-            user = user_service.find_user(params['id'][0])
+            user = login_service.find_user(params['id'][0])
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
             self.wfile.write(str(user.to_json()).encode())
 
         elif path.startswith('/set_password'):
-            is_success = user_service.set_password(
+            is_success = login_service.set_password(
                 params['id'][0], params['password'][0])
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
@@ -87,7 +88,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             self.wfile.write(str(is_success).encode())
 
         elif path.startswith('/set_email'):
-            is_success = user_service.set_email(
+            is_success = login_service.set_email(
                 params['id'][0], params['email'][0])
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
@@ -95,10 +96,10 @@ class CustomHandler(BaseHTTPRequestHandler):
             self.wfile.write(str(is_success).encode())
 
         elif path.startswith('/is_login'):
-            user = User()
+            user = Login()
             user.set_args(params['id'][0], params['password'][0],
                           '', 1)
-            is_success = user_service.login(user)
+            is_success = login_service.login(user)
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
@@ -121,10 +122,10 @@ class CustomHandler(BaseHTTPRequestHandler):
                 idtype = params['idtype'][0]
             else:
                 idtype = ''
-            user = User()
+            user = Login()
             user.set_args(id, password, email, idtype)
             print(user.to_json())
-            is_success = user_service.register(user)
+            is_success = login_service.register(user)
             self.send_response(200)
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()

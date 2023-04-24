@@ -1,10 +1,11 @@
 import socket
 import ssl
 from service import part_service
-from service import user_service
+from service import login_service
 from service import in_out_service
+from service import user_service
 from pojo.part import Part
-from pojo.user import User
+from pojo.login import Login
 from pojo.in_order import In_Order
 from pojo.out_order import Out_Order
 import json
@@ -64,63 +65,145 @@ def run_server():
 
             elif (json.loads(data.decode())['key'] == 'find_all_part'):
                 part = part_service.find_all()
-                ssl_client_socket.send(str(part).encode())
+                ssl_client_socket.send(json.dumps(
+                    part, ensure_ascii=False).encode())
 
             elif (json.loads(data.decode())['key'] == 'search_user'):
-                user = user_service.find_user(
+                user = login_service.find_user(
                     json.loads(data.decode())['value']['id'])
                 ssl_client_socket.send(str(user.to_json()).encode())
 
             elif (json.loads(data.decode())['key'] == 'is_login'):
-                user = User()
+                user = Login()
                 user.set_args(json.loads(data.decode())['value']['id'],
                               json.loads(data.decode())['value']['password'],
                               '', 1)
-                is_success = user_service.login(user)
+                is_success = login_service.login(user)
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'is_register'):
-                user = User()
+                user = Login()
                 user.set_args(json.loads(data.decode())['value']['id'],
                               json.loads(data.decode())['value']['password'],
                               json.loads(data.decode())['value']['email'], 1)
-                is_success = user_service.register(user)
+                is_success = login_service.register(user)
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'set_email'):
-                is_success = user_service.set_email(json.loads(
+                is_success = login_service.set_email(json.loads(
                     data.decode())['value']['id'], json.loads(data.decode())['value']['email'])
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'set_password'):
-                is_success = user_service.set_password(json.loads(
+                is_success = login_service.set_password(json.loads(
                     data.decode())['value']['id'], json.loads(data.decode())['value']['password'])
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'admin_login'):
-                user = User()
+                user = Login()
                 user.set_args(json.loads(data.decode())['value']['id'],
                               json.loads(data.decode())['value']['password'],
                               '', 0)
-                is_success = user_service.admin_login(user)
+                is_success = login_service.admin_login(user)
                 ssl_client_socket.send(str(is_success).encode())
 
             elif (json.loads(data.decode())['key'] == 'find_all_user'):
-                user = user_service.find_all()
+                user = login_service.find_all()
                 ssl_client_socket.send(json.dumps(user).encode())
 
             elif (json.loads(data.decode())['key'] == 'find_all_in_order'):
                 order = in_out_service.find_all_in_order()
-                ssl_client_socket.send(json.dumps(order,ensure_ascii=False).encode())
-            
+                ssl_client_socket.send(json.dumps(
+                    order, ensure_ascii=False).encode())
+
             elif (json.loads(data.decode())['key'] == 'find_all_out_order'):
                 order = in_out_service.find_all_out_order()
                 ssl_client_socket.send(json.dumps(order).encode())
 
             elif (json.loads(data.decode())['key'] == 'delete_user_by_id'):
-                is_success = user_service.delete_user(json.loads(data.decode())['value'])
+                is_success = login_service.delete_user(
+                    json.loads(data.decode())['value'])
                 ssl_client_socket.send(str(is_success).encode())
 
+            elif (json.loads(data.decode())['key'] == 'find_by_icode'):
+                order = in_out_service.find_by_icode(
+                    json.loads(data.decode())['value'])
+                ssl_client_socket.send(json.dumps(
+                    order.to_json(), ensure_ascii=False).encode())
+            elif (json.loads(data.decode())['key'] == 'find_by_ocode'):
+                order = in_out_service.find_by_ocode(
+                    json.loads(data.decode())['value'])
+                ssl_client_socket.send(json.dumps(
+                    order.to_json(), ensure_ascii=False).encode())
+            elif (json.loads(data.decode())['key'] == 'delete_from_in_order'):
+                is_success = in_out_service.delete_from_in_order(
+                    json.loads(data.decode())['value'])
+                ssl_client_socket.send(str(is_success).encode())
+            elif (json.loads(data.decode())['key'] == 'insert_to_in_order'):
+                order = In_Order()
+                order.set_args(json.loads(data.decode())['value']['in_code'],
+                               json.loads(data.decode())['value']['p_code'],
+                               json.loads(data.decode())['value']['num'],
+                               json.loads(data.decode())['value']['in_time'],
+                               json.loads(data.decode())['value']['r_code'],
+                               json.loads(data.decode())['value']['s_type'],
+                               json.loads(data.decode())['value']['u_code'])
+                is_success = in_out_service.insert_to_in_order(order)
+                ssl_client_socket.send(str(is_success).encode())
+            elif json.loads(data.decode())['key'] == 'update_in_order':
+                order = In_Order()
+                order.set_args(json.loads(data.decode())['value']['in_code'],
+                               json.loads(data.decode())['value']['p_code'],
+                               json.loads(data.decode())['value']['num'],
+                               json.loads(data.decode())['value']['in_time'],
+                               json.loads(data.decode())['value']['r_code'],
+                               json.loads(data.decode())['value']['s_type'],
+                               json.loads(data.decode())['value']['u_code'])
+                is_success = in_out_service.update_in_order(order)
+                ssl_client_socket.send(str(is_success).encode())
+            elif json.loads(data.decode())['key'] == 'delete_from_out_order':
+                is_success = in_out_service.delete_from_out_order(
+                    json.loads(data.decode())['value'])
+                ssl_client_socket.send(str(is_success).encode())
+            elif json.loads(data.decode())['key'] == 'insert_to_out_order':
+                order = Out_Order()
+                order.set_args(json.loads(data.decode())['value']['out_code'],
+                               json.loads(data.decode())['value']['p_code'],
+                               json.loads(data.decode())['value']['num'],
+                               json.loads(data.decode())['value']['out_time'],
+                               json.loads(data.decode())['value']['r_code'],
+                               json.loads(data.decode())['value']['s_type'],
+                               json.loads(data.decode())['value']['u_code'])
+                is_success = in_out_service.insert_to_out_order(order)
+                ssl_client_socket.send(str(is_success).encode())
+            elif json.loads(data.decode())['key'] == 'update_out_order':
+                order = Out_Order()
+                order.set_args(json.loads(data.decode())['value']['out_code'],
+                               json.loads(data.decode())['value']['p_code'],
+                               json.loads(data.decode())['value']['r_code'],
+                               json.loads(data.decode())['value']['num'],
+                               json.loads(data.decode())['value']['out_time'],
+                               json.loads(data.decode())['value']['u_code'])
+                is_success = in_out_service.update_out_order(order)
+                ssl_client_socket.send(str(is_success).encode())
+            elif json.loads(data.decode())['key'] == 'select_by_sty_rco':
+                pa_table = in_out_service.select_all()
+                ssl_client_socket.send(json.dumps(pa_table).encode())
+            elif json.loads(data.decode())['key'] == 'select_by_pco_rco':
+                pa_table = in_out_service.select_all()
+                ssl_client_socket.send(json.dumps(pa_table).encode())
+            elif json.loads(data.decode())['key'] == 'select_by_rco':
+                pa_table = in_out_service.select_all()
+                ssl_client_socket.send(json.dumps(pa_table).encode())
+            elif json.loads(data.decode())['key'] == 'select_by_scode':
+                pa_table = in_out_service.select_all()
+                ssl_client_socket.send(json.dumps(pa_table).encode())
+            elif json.loads(data.decode())['key'] == 'select_all_pa_table':
+                pa_table = in_out_service.select_all()
+                ssl_client_socket.send(json.dumps(pa_table).encode())
+            elif json.loads(data.decode())['key'] == 'find_all_user_info':
+                users = user_service.select_all_user()
+                ssl_client_socket.send(json.dumps(users,ensure_ascii=False).encode())
             else:
                 ssl_client_socket.send(b'Invalid request!')
 
